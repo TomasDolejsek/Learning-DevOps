@@ -9,3 +9,18 @@ git init
 git remote add origin file:///tmp/git-bare
 
 --- Stage 3 ---
+echo print('Hello world') > main.py
+echo PASSWORD=Ax?bu75+33 > .env
+
+--- Stage 4 ---
+echo .env > .gitignore
+
+--- Stage 5 ---
+git add --all
+git commit -m "Initial commit"
+
+--- Stage 6 ---
+git push --set-upstream file:///tmp/git-bare main
+
+--- Stage 7 ---
+git remote --verbose
