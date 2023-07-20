@@ -9,8 +9,9 @@
 
 # Stage 2
 echo "Welcome to the True or False Game!"
-username=$(head -n 1 ./log.txt | cut -d ' ' -f 2)
+username=$(head -n 1 ./log.txt | cut -d ' ' -f 2 | sed 's/^.//' | sed 's/..$//')
 echo $username
-password=$(head -n 1 ./log.txt | cut -d ' ' -f 3 | sed 's/^.//' | sed 's/..$//')
+password=$(head -n 1 ./log.txt | cut -d ' ' -f 4 | sed 's/^.//' | sed 's/.$//')
 echo $password
-#curl -sc cookies.txt http://127.0.0.1:8000/login
+curl -sc cookies.txt http://127.0.0.1:8000/login
+echo "Login message: $(grep login cookies.txt)"
