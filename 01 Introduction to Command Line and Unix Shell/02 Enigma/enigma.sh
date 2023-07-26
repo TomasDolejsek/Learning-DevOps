@@ -86,11 +86,9 @@ filename_pattern='^[A-Za-z.]+$'
 message_pattern='^[A-Z ]+$'
 
 function display_menu() {
-	echo "Welcome to the Enigma!"
-	echo
 	echo "0. Exit"
 	echo "1. Create a file"
-	echo "2. Create a file"
+	echo "2. Read a file"
 	echo "3. Encrypt a file"
 	echo "4. Decrypt a file"
 	echo "Enter an option:"
@@ -116,33 +114,43 @@ function create_file() {
 	}
 
 function read_file() {
-	
-	
-	{
-	
-display_menu
-read user
-case "$user" in
-	0)
-		echo "See you later!"
-		exit
-		;;
-	1)
-		create_file
-		;;
-	2)
-		read_file
-		;;
-	3)
-		echo "Not iplemented!"
-		;;
-	4)
-		echo "No implemented!"
-		;;
-	*)
-		echo "Invalid option!"
-		;;
-esac
+	echo "Enter the filename:"
+	read filename
+	if [[ "$(find -name $filename -type f)" == '' ]]; then
+		echo "File not found!"
+		return
+	fi
 
-
+	echo "File content:"
+	cat $filename
+	}
+	
+echo "Welcome to the Enigma!"
+echo
+while true;
+do
+	display_menu
+	read user
+	case "$user" in
+		0)
+			echo "See you later!"
+			exit
+			;;
+		1)
+			create_file
+			;;
+		2)
+			read_file
+			;;
+		3)
+			echo "Not implemented!"
+			;;
+		4)
+			echo "Not implemented!"
+			;;
+		*)
+			echo "Invalid option!"
+			;;
+	esac
+done
 
