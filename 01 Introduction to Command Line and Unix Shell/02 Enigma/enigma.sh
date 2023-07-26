@@ -115,6 +115,11 @@ function create_file() {
 	echo "The file was created successfully!"
 	}
 
+function read_file() {
+	
+	
+	{
+	
 display_menu
 read user
 case "$user" in
