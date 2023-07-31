@@ -124,7 +124,38 @@ function read_file() {
 	echo "File content:"
 	cat $filename
 	}
-	
+
+# Stage 5
+function encrypt_file() {
+	echo "Enter the filename:"
+	read filename
+	if [[ "$(find -name $filename -type f)" == '' ]]; then
+		echo "File not found!"
+		return
+	fi
+	encrypt_filename="$filename.enc"
+	message=$(cat $filename)
+	echo $message | tr "[A-Z]" "[D-ZA-C]" > $encrypt_filename
+	rm $filename
+	echo "Success"
+	}
+
+function decrypt_file() {
+	echo "Enter the filename:"
+	read filename
+	if [[ "$(find -name $filename -type f)" == '' ]]; then
+		echo "File not found!"
+		return
+	fi
+	decrypt_filename=$(echo ${filename::-4})
+	message=$(cat $filename)
+	echo $message | tr "[D-ZA-C]" "[A-Z]" > $decrypt_filename
+	rm $filename
+	echo "Success"
+	}
+
+# Stage 6
+
 echo "Welcome to the Enigma!"
 echo
 while true;
@@ -143,10 +174,10 @@ do
 			read_file
 			;;
 		3)
-			echo "Not implemented!"
+			encrypt_file
 			;;
 		4)
-			echo "Not implemented!"
+			decrypt_file
 			;;
 		*)
 			echo "Invalid option!"
