@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -euo pipefail
+#set -euo pipefail
 
 # Stage 1
 #echo "Enter a message:"
@@ -155,6 +155,45 @@ function decrypt_file() {
 	}
 
 # Stage 6
+function ssl_encrypt_file() {
+	echo "Enter the filename:"
+	read filename
+	if [[ "$(find -name $filename -type f)" == '' ]]; then
+		echo "File not found!"
+		return
+	fi
+	encrypt_filename="$filename.enc"
+	echo "Enter password:"
+	read password
+	openssl enc -aes-256-cbc -e -pbkdf2 -nosalt -in "$filename" -out "$encrypt_filename" -pass pass:"$password" &>/dev/null
+	exit_code=$?
+	if [[ $exit_code -ne 0 ]]; then
+		echo "Fail"
+	else
+		rm $filename
+        echo "Success"
+	fi
+	}
+
+function ssl_decrypt_file() {
+	echo "Enter the filename:"
+	read filename
+	if [[ "$(find -name $filename -type f)" == '' ]]; then
+		echo "File not found!"
+		return
+	fi
+	decrypt_filename=$(echo ${filename::-4})
+	echo "Enter password:"
+	read password
+	openssl enc -aes-256-cbc -d -pbkdf2 -nosalt -in "$filename" -out "$decrypt_filename" -pass pass:"$password" &>/dev/null
+	exit_code=$?
+	if [[ $exit_code -ne 0 ]]; then
+		echo "Fail"
+	else
+    	rm $filename
+        echo "Success"
+	fi
+	}
 
 echo "Welcome to the Enigma!"
 echo
@@ -174,14 +213,13 @@ do
 			read_file
 			;;
 		3)
-			encrypt_file
+			ssl_encrypt_file
 			;;
 		4)
-			decrypt_file
+			ssl_decrypt_file
 			;;
 		*)
 			echo "Invalid option!"
 			;;
 	esac
 done
-
