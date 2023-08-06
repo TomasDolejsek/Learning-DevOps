@@ -29,6 +29,15 @@ function display_fdmenu() {
 	echo "---------------------------------------------------"
 	}
 
+# Stage 4
+function fd_actions() {
+	if [[ $(find -type d -name "$user") ]]; then
+		cd $user
+	else
+		echo "Not Implemented!"
+	fi
+	}
+
 function fd_operations() {
 	while true; do
 		echo -e "\nThe list of files and directories:"
@@ -39,12 +48,12 @@ function fd_operations() {
 				return
 				;;
 			'up')
-				echo "Not implemented!"
+				cd ..
+				continue
 				;;
-			
 			*)
 				if echo "${arr[@]}" | grep -wq "$user"; then
-   					echo "Not implemented!"
+					fd_actions
 				else
 					echo "Invalid input!"
 				fi
