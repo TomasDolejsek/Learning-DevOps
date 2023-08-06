@@ -106,6 +106,21 @@ function fd_operations() {
 	done			
 	}
 
+# Stage 6
+function executables() {
+	echo "Enter an executable name:"
+	read ex_name
+	location=$(echo $(which "$ex_name"))
+	if ! [[ $location ]]; then
+		echo -e "\nThe executable with that name does not exist!"
+		return		
+	fi
+	echo -e "\nLocated in: $location"
+	echo -e "\nEnter arguments:"
+	read args
+	echo $(${ex_name} ${args})
+	}
+
 echo "Hello $USER!"
 while true; do
 	display_menu
@@ -125,7 +140,7 @@ while true; do
 			fd_operations
 			;;
 		4)
-			echo -e "\nNot implemented!"
+			executables
 			;;
 		*)
 			echo -e "\nInvalid option!"
