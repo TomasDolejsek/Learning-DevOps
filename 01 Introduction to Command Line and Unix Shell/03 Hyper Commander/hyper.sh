@@ -13,7 +13,7 @@ function display_menu() {
 	echo "------------------------------"	
 	}
 
-# Stage 2 + 3
+# Stage 2
 function display_fdmenu() {
 	arr=(*)
 	for item in "${arr[@]}"; do
@@ -29,21 +29,65 @@ function display_fdmenu() {
 	echo "---------------------------------------------------"
 	}
 
+# Stage 5
+function display_file_menu () {
+	echo "---------------------------------------------------------------------"
+	echo "| 0 Back | 1 Delete | 2 Rename | 3 Make writable | 4 Make read-only |"
+	echo "---------------------------------------------------------------------"
+	}
+
+function file_actions () {
+	while true; do
+		display_file_menu
+		read user_choice
+		case $user_choice in
+			0) 
+				return
+				;;
+			1)
+				rm "$fd"
+				echo "$fd has been deleted."
+				return
+				;;
+			2)
+				echo "Enter the new file name:"
+				read new_filename
+				mv "$fd" "$new_filename"
+				echo "$fd has been renamed as $new_filename"
+				return
+				;;
+			3)
+				chmod 666 "$fd"
+				echo "Permissions have been updated."
+				ls -l "$fd"
+				return
+				;;
+			4)
+				chmod 664 "$fd"
+				echo "Permissions have been updated."
+				ls -l "$fd"
+				return
+				;;
+		esac			
+	done
+	}
+
 # Stage 4
 function fd_actions() {
-	if [[ $(find -type d -name "$user") ]]; then
-		cd $user
+	if [[ $(find -type d -name "$fd") ]]; then
+		cd "$fd"
 	else
-		echo "Not Implemented!"
+		file_actions
 	fi
 	}
 
+# Stage 3
 function fd_operations() {
 	while true; do
 		echo -e "\nThe list of files and directories:"
 		display_fdmenu
-		read user
-		case $user in
+		read fd
+		case $fd in
 			0) 
 				return
 				;;
@@ -52,7 +96,7 @@ function fd_operations() {
 				continue
 				;;
 			*)
-				if echo "${arr[@]}" | grep -wq "$user"; then
+				if echo "${arr[@]}" | grep -wq "$fd"; then
 					fd_actions
 				else
 					echo "Invalid input!"
