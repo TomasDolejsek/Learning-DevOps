@@ -1,0 +1,5 @@
+--- Stage 1 ---
+git init
+git branch -m main
+git add .
+git commit -m "Hello, world" 
